@@ -9,9 +9,10 @@ import UIKit
 
 class HomeVC: UIViewController {
 
+    @IBOutlet weak var label: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        label.text = "Merhaba"
         // Do any additional setup after loading the view.
     }
 
