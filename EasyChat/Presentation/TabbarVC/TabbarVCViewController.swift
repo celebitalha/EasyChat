@@ -97,7 +97,7 @@ class TabbarVCViewController: UIViewController {
     }
     
     @objc private func speakTabTapped() {
-        // TODO: Create SpeakVC and implement
+        // TODO: Create SpeakVC and implementt
         print("Speak tab tapped - Not implemented yet")
     }
     
