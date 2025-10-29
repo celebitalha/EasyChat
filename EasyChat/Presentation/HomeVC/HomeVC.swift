@@ -12,7 +12,7 @@ class HomeVC: UIViewController {
     @IBOutlet weak var label: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        label.text = "Merhaba"
+        label.text = "Merhabaa"
         // Do any additional setup after loading the view.
     }
 
