@@ -21,8 +21,11 @@ class TabbarVCViewController: UIViewController {
     @IBOutlet weak var listenIcon: UIImageView!
     @IBOutlet weak var listenTabBackView: UIView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var logoBackView: UIView!
+    @IBOutlet weak var AppLogoImg: UIImageView!
     
     private var homeVC: HomeVC!
+    private var cardsVC: CardsVC!
     private var currentViewController: UIViewController?
     
     private var selectedTabIndex = 0
@@ -36,32 +39,38 @@ class TabbarVCViewController: UIViewController {
     }
 
     func setUI () {
-        self.view.backgroundColor = .white
-        backView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        self.view.backgroundColor = AppColors.background
+        backView.backgroundColor = AppColors.primary
         backView.layer.cornerRadius = 24
         backView.layer.borderWidth = 1
-        backView.layer.borderColor = UIColor.blue.withAlphaComponent(0.5)
-        .cgColor
-        firstLineView.backgroundColor =  UIColor.lightGray.withAlphaComponent(0.3)
-        secondLineView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
-        thirdLineView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+        backView.layer.borderColor = AppColors.cardBorder.cgColor
+        
+        AppLogoImg.image = UIImage(named: "Navigation-logo")
+        AppLogoImg.contentMode = .scaleAspectFill
+        AppLogoImg.backgroundColor = .clear
+        logoBackView.backgroundColor = AppColors.background
+        
+        firstLineView.backgroundColor =  AppColors.cardBorder
+        secondLineView.backgroundColor = AppColors.cardBorder
+        thirdLineView.backgroundColor = AppColors.cardBorder
         
         homeIcon.image = UIImage(systemName: "house")
-        homeIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
+        homeIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
         
         cardsIcon.image = UIImage(systemName: "rectangle.stack")
-        cardsIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
+        cardsIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
         
         speakIcon.image = UIImage(systemName: "waveform")
-        speakIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
+        speakIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
         
         listenIcon.image = UIImage(systemName: "ear.badge.waveform")
-        listenIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
+        listenIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
     }
     
     // MARK: - Setup Methods
     private func setupViewControllers() {
         homeVC = HomeVC(nibName: "HomeVC", bundle: nil)
+        cardsVC = CardsVC(nibName: "CardsVC", bundle: nil)
     }
     
     private func setupGestures() {
@@ -92,8 +101,7 @@ class TabbarVCViewController: UIViewController {
     }
     
     @objc private func cardsTabTapped() {
-        // TODO: Create CardsVC and implement
-        print("Cards tab tapped - Not implemented yet")
+        switchToViewController(cardsVC, tabIndex: 1)
     }
     
     @objc private func speakTabTapped() {
@@ -131,23 +139,22 @@ class TabbarVCViewController: UIViewController {
         
         switch selectedTabIndex {
         case 0:
-            homeIcon.tintColor = UIColor.blue.withAlphaComponent(0.5)
-            homeIcon.image = UIImage(systemName: "house.fill")
+            homeIcon.tintColor = AppColors.cardTitleColor
         case 1:
-            cardsIcon.tintColor = UIColor.blue.withAlphaComponent(0.5)
+            cardsIcon.tintColor = AppColors.cardTitleColor
         case 2:
-            speakIcon.tintColor = UIColor.blue.withAlphaComponent(0.5)
+            speakIcon.tintColor = AppColors.cardTitleColor
         case 3:
-            listenIcon.tintColor = UIColor.blue.withAlphaComponent(0.5)
+            listenIcon.tintColor = AppColors.cardTitleColor
         default:
             break
         }
     }
     
     private func resetTabAppearances() {
-        homeIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
-        cardsIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
-        speakIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
-        listenIcon.tintColor = UIColor.blue.withAlphaComponent(0.3)
+        homeIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
+        cardsIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
+        speakIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
+        listenIcon.tintColor = AppColors.cardTitleColor.withAlphaComponent(0.5)
     }
 }

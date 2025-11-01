@@ -15,7 +15,7 @@ class CategoryCell: UICollectionViewCell {
     
     let categories = ["Daily","Meal","Basic","Emotions","Actions"]
     let icons = ["quote.bubble.fill","fork.knife.circle.fill","bed.double.fill","heart.fill","figure.walk"]
-    let imageColors: [UIColor] = [.yellow, .blue, .systemYellow, .systemRed, .systemPurple]
+    let imageColors: [UIColor] = [AppColors.dailyIcon, AppColors.mealIcon, AppColors.basicIcon, .systemRed, .systemPurple]
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,12 +23,12 @@ class CategoryCell: UICollectionViewCell {
     }
     
     func setUI(){
-        backView.backgroundColor = .white
-        backView.layer.cornerRadius = 29
+        backView.backgroundColor = AppColors.background
+        backView.layer.cornerRadius = frame.height / 2
         
         titleLbl.textAlignment = .center
         titleLbl.font = .systemFont(ofSize: 12, weight: .bold)
-        titleLbl.textColor = .lightGray
+        titleLbl.textColor = AppColors.cardTextColor
     }
     
     func configureCell(at index: Int) {

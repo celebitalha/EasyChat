@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TabbarVCViewController" customModule="EasyChat" customModuleProvider="target">
             <connections>
+                <outlet property="AppLogoImg" destination="XaM-Br-329" id="rAo-jU-Cqs"/>
                 <outlet property="backView" destination="PYR-IW-Ymb" id="7EB-Sb-0dG"/>
                 <outlet property="cardsIcon" destination="LGT-xq-Sxq" id="DU8-Xz-K0h"/>
                 <outlet property="cardsTabBackView" destination="XC5-rG-gMh" id="7uo-5E-SyJ"/>
@@ -19,6 +20,7 @@
                 <outlet property="homeTabBackView" destination="AEk-lS-E31" id="V60-Zi-1An"/>
                 <outlet property="listenIcon" destination="i2i-1K-5jH" id="VhF-Nj-63M"/>
                 <outlet property="listenTabBackView" destination="dma-GO-6CN" id="E40-DU-7mP"/>
+                <outlet property="logoBackView" destination="RND-fV-TUo" id="SEm-hq-LGX"/>
                 <outlet property="secondLineView" destination="LWS-BL-FjC" id="vJG-pz-NiA"/>
                 <outlet property="speakIcon" destination="lOn-gM-Pln" id="FrL-K9-5hW"/>
                 <outlet property="speakTabBackView" destination="m11-Xz-b5g" id="AXY-EZ-xbF"/>
@@ -169,19 +171,41 @@
                     <rect key="frame" x="0.0" y="100" width="393" height="652"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RND-fV-TUo">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XaM-Br-329">
+                            <rect key="frame" x="121.66666666666669" y="60" width="150" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="LQc-XO-Jpg"/>
+                                <constraint firstAttribute="height" constant="40" id="Zkt-LL-mJD"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="XaM-Br-329" firstAttribute="top" secondItem="RND-fV-TUo" secondAttribute="top" constant="60" id="FyO-Il-GEI"/>
+                        <constraint firstItem="XaM-Br-329" firstAttribute="centerX" secondItem="RND-fV-TUo" secondAttribute="centerX" id="Msd-RE-Ypq"/>
+                        <constraint firstAttribute="bottom" secondItem="XaM-Br-329" secondAttribute="bottom" id="tt7-J6-0hz"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="RND-fV-TUo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3JF-aS-wPu"/>
                 <constraint firstAttribute="trailing" secondItem="VBf-2u-v4c" secondAttribute="trailing" id="63l-Td-XqD"/>
+                <constraint firstItem="VBf-2u-v4c" firstAttribute="top" secondItem="RND-fV-TUo" secondAttribute="bottom" id="IdY-cH-RMe"/>
+                <constraint firstItem="RND-fV-TUo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Nwr-lD-Xot"/>
                 <constraint firstItem="iVb-5m-DE4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="P7u-Bw-Amg"/>
                 <constraint firstAttribute="trailing" secondItem="iVb-5m-DE4" secondAttribute="trailing" id="fIe-QN-qfx"/>
                 <constraint firstItem="VBf-2u-v4c" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="gYF-qu-6hG"/>
                 <constraint firstAttribute="bottom" secondItem="iVb-5m-DE4" secondAttribute="bottom" id="gm0-yq-Zmw"/>
                 <constraint firstItem="VBf-2u-v4c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pCc-bk-Zdi"/>
+                <constraint firstAttribute="trailing" secondItem="RND-fV-TUo" secondAttribute="trailing" id="pUr-Wj-9xQ"/>
                 <constraint firstItem="iVb-5m-DE4" firstAttribute="top" secondItem="VBf-2u-v4c" secondAttribute="bottom" id="tBQ-HI-yRc"/>
             </constraints>
-            <point key="canvasLocation" x="-11" y="21"/>
+            <point key="canvasLocation" x="-11.450381679389313" y="20.422535211267608"/>
         </view>
     </objects>
     <resources>

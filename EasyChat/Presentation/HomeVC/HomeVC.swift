@@ -25,51 +25,49 @@ class HomeVC: UIViewController {
     }
 
     func configureCollectionView() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = AppColors.background
         
-        speakBackView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        speakBackView.backgroundColor = AppColors.primary
         speakBackView.layer.borderWidth = 1
-        speakBackView.layer.borderColor = UIColor.blue.withAlphaComponent(0.5).cgColor
+        speakBackView.layer.borderColor = AppColors.cardBorder.cgColor
         speakBackView.layer.cornerRadius = 16
         
         speakIcon.image = UIImage(named: "talking")
-        speakIcon.tintColor = .blue
         
-        speakTitle.textColor = UIColor.blue.withAlphaComponent(0.5)
+        speakTitle.textColor = AppColors.cardTitleColor
         speakTitle.text = "Let us be your voice"
         speakTitle.textAlignment = .left
         speakTitle.numberOfLines = 0
         speakTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
         speakDesc.text = "Tap this card and let your words be heard."
-        speakDesc.textColor = .lightGray
-        speakDesc.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        speakDesc.textColor = AppColors.cardTextColor
+        speakDesc.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         speakDesc.isUserInteractionEnabled = false
        
-        listenBackView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        listenBackView.backgroundColor = AppColors.primary
         listenBackView.layer.borderWidth = 1
-        listenBackView.layer.borderColor = UIColor.blue.withAlphaComponent(0.5).cgColor
+        listenBackView.layer.borderColor = AppColors.cardBorder.cgColor
         listenBackView.layer.cornerRadius = 16
         
         listenIcon.image = UIImage(named: "eavesdropping")
-        listenIcon.tintColor = .blue
         
         listenTitle.numberOfLines = 0
-        listenTitle.textColor = UIColor.blue.withAlphaComponent(0.5)
+        listenTitle.textColor = AppColors.cardTitleColor
         listenTitle.text = "Let us be your ears"
         listenTitle.textAlignment = .left
         listenTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
         listenDesc.text = "Tap this card and capture sounds around you and see them in words."
-        listenDesc.textColor = .lightGray
-        listenDesc.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        listenDesc.textColor = AppColors.cardTextColor
+        listenDesc.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         listenDesc.isUserInteractionEnabled = false
         
         
         categoriesBackView.layer.cornerRadius = 16
         categoriesBackView.layer.borderWidth = 1
-        categoriesBackView.layer.borderColor = UIColor.blue.withAlphaComponent(0.5).cgColor
-        categoriesBackView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        categoriesBackView.layer.borderColor = AppColors.cardBorder.cgColor
+        categoriesBackView.backgroundColor = AppColors.primary
         categoryCollectionView.backgroundColor = .clear
         categoryCollectionView.showsHorizontalScrollIndicator = false
         categoryCollectionView.showsVerticalScrollIndicator = false
