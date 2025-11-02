@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CardsCardCell: UICollectionViewCell {
     
@@ -13,6 +14,9 @@ class CardsCardCell: UICollectionViewCell {
     @IBOutlet weak var audioImg: UIImageView!
     @IBOutlet weak var audioBackView: UIView!
     @IBOutlet weak var cardTitle: UILabel!
+    
+    private let synthesizer = AVSpeechSynthesizer()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setUI()
@@ -20,8 +24,10 @@ class CardsCardCell: UICollectionViewCell {
     
     func setUI(){
         backView.layer.cornerRadius = 16
+        
         audioImg.image = UIImage(systemName: "speaker.wave.1")
         audioImg.tintColor = .white
+        
         let listenGesture = UITapGestureRecognizer(target: self, action: #selector(listenClicked))
         audioBackView.addGestureRecognizer(listenGesture)
         audioBackView.isUserInteractionEnabled = true
@@ -33,6 +39,14 @@ class CardsCardCell: UICollectionViewCell {
     }
     
     @objc func listenClicked (){
+        guard let text = cardTitle.text, !text.isEmpty else { return }
         
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = 0.5
+        utterance.pitchMultiplier = 1.0
+        utterance.volume = 1.0
+        
+        synthesizer.speak(utterance)
     }
 }
