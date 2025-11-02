@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CardsCardCell" customModule="EasyChat" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="118" height="250"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="118" height="250"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SMB-Vo-11t">
+                        <rect key="frame" x="0.0" y="0.0" width="118" height="250"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xlJ-fc-eDA">
+                                <rect key="frame" x="0.0" y="0.0" width="118" height="60"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E8y-eI-xzV">
+                                        <rect key="frame" x="58" y="0.0" width="60" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Joz-fR-peB">
+                                                <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="NAv-m9-J3Y"/>
+                                                    <constraint firstAttribute="width" constant="40" id="hsK-Le-dC6"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Joz-fR-peB" secondAttribute="trailing" constant="10" id="4ze-Ih-FPA"/>
+                                            <constraint firstItem="Joz-fR-peB" firstAttribute="top" secondItem="E8y-eI-xzV" secondAttribute="top" constant="10" id="6ul-ct-bg6"/>
+                                            <constraint firstAttribute="width" constant="60" id="AXg-U4-9Cy"/>
+                                            <constraint firstAttribute="bottom" secondItem="Joz-fR-peB" secondAttribute="bottom" constant="10" id="iUa-be-cCh"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="E8y-eI-xzV" secondAttribute="trailing" id="K3J-tI-b0H"/>
+                                    <constraint firstItem="E8y-eI-xzV" firstAttribute="top" secondItem="xlJ-fc-eDA" secondAttribute="top" id="NQ4-eH-vwj"/>
+                                    <constraint firstAttribute="height" constant="60" id="R9p-c7-LhW"/>
+                                    <constraint firstAttribute="bottom" secondItem="E8y-eI-xzV" secondAttribute="bottom" id="hOp-27-3j1"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7W-JY-Hyf">
+                                <rect key="frame" x="16" y="114.66666666666667" width="86" height="21.000000000000014"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xlJ-fc-eDA" secondAttribute="trailing" id="8pR-Vv-4tD"/>
+                            <constraint firstItem="xlJ-fc-eDA" firstAttribute="leading" secondItem="SMB-Vo-11t" secondAttribute="leading" id="9Lx-0h-jcH"/>
+                            <constraint firstItem="h7W-JY-Hyf" firstAttribute="centerX" secondItem="SMB-Vo-11t" secondAttribute="centerX" id="OsB-C5-Zxe"/>
+                            <constraint firstItem="xlJ-fc-eDA" firstAttribute="top" secondItem="SMB-Vo-11t" secondAttribute="top" id="b5X-lh-H8q"/>
+                            <constraint firstItem="h7W-JY-Hyf" firstAttribute="centerY" secondItem="SMB-Vo-11t" secondAttribute="centerY" id="s61-6K-1pX"/>
+                            <constraint firstItem="h7W-JY-Hyf" firstAttribute="leading" secondItem="SMB-Vo-11t" secondAttribute="leading" constant="16" id="w5B-iM-JiY"/>
+                            <constraint firstAttribute="trailing" secondItem="h7W-JY-Hyf" secondAttribute="trailing" constant="16" id="wBR-6R-fmG"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="SMB-Vo-11t" secondAttribute="trailing" id="Geu-ZG-QCj"/>
+                <constraint firstItem="SMB-Vo-11t" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Zdg-Vp-DUt"/>
+                <constraint firstAttribute="bottom" secondItem="SMB-Vo-11t" secondAttribute="bottom" id="nAt-ka-mEa"/>
+                <constraint firstItem="SMB-Vo-11t" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="tZT-Ia-Gu4"/>
+            </constraints>
+            <connections>
+                <outlet property="audioBackView" destination="E8y-eI-xzV" id="7Xq-0O-rJX"/>
+                <outlet property="audioImg" destination="Joz-fR-peB" id="qoj-1t-7El"/>
+                <outlet property="backView" destination="SMB-Vo-11t" id="8s9-Uu-7bx"/>
+                <outlet property="cardTitle" destination="h7W-JY-Hyf" id="nr3-ok-TJn"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="21"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
