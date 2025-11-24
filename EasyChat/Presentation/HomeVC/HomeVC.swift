@@ -31,6 +31,9 @@ class HomeVC: UIViewController {
         speakBackView.layer.borderWidth = 1
         speakBackView.layer.borderColor = AppColors.cardBorder.cgColor
         speakBackView.layer.cornerRadius = 16
+        let speakGesture = UITapGestureRecognizer(target: self, action: #selector(speakTapped))
+        speakBackView.addGestureRecognizer(speakGesture)
+        speakBackView.isUserInteractionEnabled = true
         
         speakIcon.image = UIImage(named: "talking")
         
@@ -41,7 +44,7 @@ class HomeVC: UIViewController {
         speakTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
         speakDesc.text = "Tap this card and let your words be heard."
-        speakDesc.textColor = AppColors.cardTextColor
+        speakDesc.textColor = AppColors.cardDescColor
         speakDesc.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         speakDesc.isUserInteractionEnabled = false
        
@@ -59,7 +62,7 @@ class HomeVC: UIViewController {
         listenTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
         listenDesc.text = "Tap this card and capture sounds around you and see them in words."
-        listenDesc.textColor = AppColors.cardTextColor
+        listenDesc.textColor = AppColors.cardDescColor
         listenDesc.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         listenDesc.isUserInteractionEnabled = false
         
@@ -78,6 +81,13 @@ class HomeVC: UIViewController {
         if let layout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
+    }
+    
+    @objc func speakTapped() {
+        let speakVC = SpeakerVC(nibName: "SpeakerVC", bundle: nil)
+        let navController = UINavigationController(rootViewController: speakVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
     }
 }
 

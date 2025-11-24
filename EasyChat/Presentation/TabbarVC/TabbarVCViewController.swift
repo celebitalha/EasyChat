@@ -26,6 +26,7 @@ class TabbarVCViewController: UIViewController {
     
     private var homeVC: HomeVC!
     private var cardsVC: CardsVC!
+    private var speakerVC: SpeakerVC!
     private var currentViewController: UIViewController?
     
     private var selectedTabIndex = 0
@@ -48,7 +49,10 @@ class TabbarVCViewController: UIViewController {
         AppLogoImg.image = UIImage(named: "Navigation-logo")
         AppLogoImg.contentMode = .scaleAspectFill
         AppLogoImg.backgroundColor = .clear
+        
         logoBackView.backgroundColor = AppColors.background
+        logoBackView.layer.borderWidth = 1
+        logoBackView.layer.borderColor = AppColors.cardBorder.cgColor
         
         firstLineView.backgroundColor =  AppColors.cardBorder
         secondLineView.backgroundColor = AppColors.cardBorder
@@ -71,6 +75,7 @@ class TabbarVCViewController: UIViewController {
     private func setupViewControllers() {
         homeVC = HomeVC(nibName: "HomeVC", bundle: nil)
         cardsVC = CardsVC(nibName: "CardsVC", bundle: nil)
+        speakerVC = SpeakerVC(nibName: "SpeakerVC", bundle: nil)
     }
     
     private func setupGestures() {
@@ -105,8 +110,7 @@ class TabbarVCViewController: UIViewController {
     }
     
     @objc private func speakTabTapped() {
-        // TODO: Create SpeakVC and implementt
-        print("Speak tab tapped - Not implemented yet")
+        switchToViewController(speakerVC, tabIndex: 2)
     }
     
     @objc private func listenTabTapped() {

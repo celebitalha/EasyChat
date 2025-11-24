@@ -28,7 +28,7 @@ class CategoryCell: UICollectionViewCell {
         
         titleLbl.textAlignment = .center
         titleLbl.font = .systemFont(ofSize: 12, weight: .bold)
-        titleLbl.textColor = AppColors.cardTextColor
+        titleLbl.textColor = AppColors.cardDescColor
     }
     
     func configureCell(at index: Int) {
