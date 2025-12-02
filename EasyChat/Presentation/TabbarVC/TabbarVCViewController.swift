@@ -109,7 +109,7 @@ class TabbarVCViewController: UIViewController {
         switchToViewController(cardsVC, tabIndex: 1)
     }
     
-    @objc private func speakTabTapped() {
+    @objc func speakTabTapped() {
         switchToViewController(speakerVC, tabIndex: 2)
     }
     

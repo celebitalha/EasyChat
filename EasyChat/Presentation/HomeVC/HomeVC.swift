@@ -84,10 +84,11 @@ class HomeVC: UIViewController {
     }
     
     @objc func speakTapped() {
-        let speakVC = SpeakerVC(nibName: "SpeakerVC", bundle: nil)
-        let navController = UINavigationController(rootViewController: speakVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+        if let tabbarVC = self.parent as? TabbarVCViewController {
+            tabbarVC.speakTabTapped()
+        } else if let tabbarVC = self.view.window?.rootViewController as? TabbarVCViewController {
+            tabbarVC.speakTabTapped()
+        }
     }
 }
 
