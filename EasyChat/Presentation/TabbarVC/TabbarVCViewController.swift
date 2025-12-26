@@ -27,6 +27,7 @@ class TabbarVCViewController: UIViewController {
     private var homeVC: HomeVC!
     private var cardsVC: CardsVC!
     private var speakerVC: SpeakerVC!
+    private var listenerVC: ListenerVC!
     private var currentViewController: UIViewController?
     
     private var selectedTabIndex = 0
@@ -76,6 +77,7 @@ class TabbarVCViewController: UIViewController {
         homeVC = HomeVC(nibName: "HomeVC", bundle: nil)
         cardsVC = CardsVC(nibName: "CardsVC", bundle: nil)
         speakerVC = SpeakerVC(nibName: "SpeakerVC", bundle: nil)
+        listenerVC = ListenerVC(nibName: "ListenerVC", bundle: nil)
     }
     
     private func setupGestures() {
@@ -114,8 +116,7 @@ class TabbarVCViewController: UIViewController {
     }
     
     @objc private func listenTabTapped() {
-        // TODO: Create ListenVC and implement
-        print("Listen tab tapped - Not implemented yet")
+        switchToViewController(listenerVC, tabIndex: 3)
     }
     
     // MARK: - View Controller Management
