@@ -22,10 +22,13 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
     private var urlSession: URLSession?
     private var audioEngine: AVAudioEngine?
     private var isRecording = false
+    private var isConnected = false
+    private var shouldReceiveMessages = false
     
     // Mac'inizin IP adresini buraya yazın
     // Terminal'de: ifconfig | grep "inet " | grep -v 127.0.0.1
-    private let backendURL = "ws://192.168.1.140:8000/ws/audio"
+    // Backend'i başlatırken: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    private let backendURL = "ws://192.168.0.17:8000/ws/audio"
     
     func connect() {
         guard let url = URL(string: backendURL) else {
@@ -36,47 +39,136 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
             return
         }
         
-        // Önceki bağlantıyı temizle
-        if let existingTask = webSocketTask {
-            existingTask.cancel(with: .goingAway, reason: nil)
+        // Önce backend'in erişilebilir olduğunu kontrol et
+        checkBackendHealth { [weak self] isHealthy in
+            guard let self = self else { return }
+            if !isHealthy {
+                DispatchQueue.main.async {
+                    self.delegate?.didReceiveError(message: "Backend'e erişilemiyor. Backend'in çalıştığından ve IP adresinin doğru olduğundan emin olun.")
+                }
+                return
+            }
+            
+            // Eğer zaten bağlıysa, önce bağlantıyı kapat
+            if self.isConnected {
+                self.disconnect()
+            }
+            
+            // Önceki bağlantıyı temizle
+            if let existingTask = self.webSocketTask {
+                existingTask.cancel(with: .goingAway, reason: nil)
+                self.webSocketTask = nil
+            }
+            
+            // URLSession'ı WebSocket için optimize edilmiş yapılandırma ile oluştur
+            let config = URLSessionConfiguration.default
+            config.timeoutIntervalForRequest = 10.0
+            config.timeoutIntervalForResource = 30.0
+            config.waitsForConnectivity = true
+            
+            self.urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue.main)
+            self.webSocketTask = self.urlSession?.webSocketTask(with: url)
+            
+            self.isConnected = false
+            self.shouldReceiveMessages = true
+            
+            // WebSocket task state'ini logla
+            if let task = self.webSocketTask {
+                print("📡 WebSocket task oluşturuldu, state: \(task.state.rawValue)")
+                print("📡 URL: \(url.absoluteString)")
+            }
+            
+            self.webSocketTask?.resume()
+            
+            // Resume sonrası state'i kontrol et
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                if let task = self?.webSocketTask {
+                    print("📡 WebSocket task state (0.5s sonra): \(task.state.rawValue)")
+                }
+            }
+            
+            // Bağlantı timeout kontrolü
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [weak self] in
+                guard let self = self else { return }
+                if !self.isConnected {
+                    print("⏱️ Bağlantı zaman aşımı")
+                    self.webSocketTask?.cancel(with: .goingAway, reason: nil)
+                    DispatchQueue.main.async {
+                        self.delegate?.didReceiveError(message: "Bağlantı zaman aşımı. Backend'in çalıştığından ve IP adresinin doğru olduğundan emin olun.")
+                    }
+                }
+            }
+            
+            print("🔄 WebSocket bağlantısı deneniyor: \(self.backendURL)")
+        }
+    }
+    
+    // Backend'in erişilebilir olduğunu kontrol et
+    private func checkBackendHealth(completion: @escaping (Bool) -> Void) {
+        let baseURL = backendURL.replacingOccurrences(of: "ws://", with: "http://").replacingOccurrences(of: "/ws/audio", with: "")
+        guard let healthURL = URL(string: "\(baseURL)/health") else {
+            completion(false)
+            return
         }
         
-        urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        webSocketTask = urlSession?.webSocketTask(with: url)
-        webSocketTask?.resume()
+        var request = URLRequest(url: healthURL)
+        request.timeoutInterval = 5.0
+        request.httpMethod = "GET"
         
-        // Bağlantı timeout kontrolü
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
-            guard let self = self else { return }
-            if self.webSocketTask?.state != .running {
-                self.delegate?.didReceiveError(message: "Bağlantı zaman aşımı. Backend'in çalıştığından ve IP adresinin doğru olduğundan emin olun.")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("⚠️ Health check hatası: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                print("✅ Backend erişilebilir")
+                completion(true)
+            } else {
+                print("⚠️ Backend health check başarısız")
+                completion(false)
             }
         }
-        
-        receiveMessage()
-        print("🔄 WebSocket bağlantısı deneniyor: \(backendURL)")
+        task.resume()
     }
     
     func disconnect() {
-        // Ses gönderimini sonlandır
-        let message = URLSessionWebSocketTask.Message.string("end")
-        webSocketTask?.send(message) { error in
-            if let error = error {
-                print("❌ Hata: \(error)")
-            }
-        }
-        
+        shouldReceiveMessages = false
         stopRecording()
-        webSocketTask?.cancel(with: .goingAway, reason: nil)
-        webSocketTask = nil
-        print("🔌 WebSocket bağlantısı kapatıldı")
-        delegate?.connectionStatusChanged(isConnected: false)
+        
+        // Eğer bağlıysa, önce "end" mesajı gönder
+        if isConnected, let task = webSocketTask {
+            let message = URLSessionWebSocketTask.Message.string("end")
+            task.send(message) { error in
+                if let error = error {
+                    print("⚠️ End mesajı gönderilemedi: \(error.localizedDescription)")
+                }
+            }
+            
+            // Mesaj gönderildikten sonra bağlantıyı kapat
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                task.cancel(with: .goingAway, reason: nil)
+                self?.webSocketTask = nil
+                self?.isConnected = false
+                print("🔌 WebSocket bağlantısı kapatıldı")
+                self?.delegate?.connectionStatusChanged(isConnected: false)
+            }
+        } else {
+            webSocketTask?.cancel(with: .goingAway, reason: nil)
+            webSocketTask = nil
+            isConnected = false
+            print("🔌 WebSocket bağlantısı kapatıldı")
+            delegate?.connectionStatusChanged(isConnected: false)
+        }
     }
     
     // Backend'den gelen mesajları dinle
     private func receiveMessage() {
-        webSocketTask?.receive { [weak self] result in
-            guard let self = self else { return }
+        guard shouldReceiveMessages, let task = webSocketTask else { return }
+        
+        task.receive { [weak self] result in
+            guard let self = self, self.shouldReceiveMessages else { return }
             
             switch result {
             case .success(let message):
@@ -92,9 +184,12 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
                 self.receiveMessage()
                 
             case .failure(let error):
-                print("❌ WebSocket hatası: \(error)")
-                DispatchQueue.main.async {
-                    self.delegate?.didReceiveError(message: error.localizedDescription)
+                // Sadece gerçek hataları göster, cancelled hatası normal
+                if (error as NSError).code != NSURLErrorCancelled {
+                    print("❌ WebSocket hatası: \(error)")
+                    DispatchQueue.main.async {
+                        self.delegate?.didReceiveError(message: error.localizedDescription)
+                    }
                 }
             }
         }
@@ -129,8 +224,16 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
     }
     
     // URLSessionWebSocketDelegate
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol `protocol`: String?) {
         print("✅ WebSocket bağlantısı açıldı")
+        let protocolString = `protocol` ?? "none"
+        print("📡 Protocol: \(protocolString)")
+        print("📡 Task state: \(webSocketTask.state.rawValue)")
+        isConnected = true
+        
+        // Bağlantı açıldıktan sonra mesaj dinlemeye başla
+        receiveMessage()
+        
         DispatchQueue.main.async {
             self.delegate?.connectionStatusChanged(isConnected: true)
         }
@@ -139,6 +242,9 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
         let reasonString = reason.flatMap { String(data: $0, encoding: .utf8) } ?? "Bilinmeyen neden"
         print("🔌 WebSocket bağlantısı kapandı. Kod: \(closeCode.rawValue), Neden: \(reasonString)")
+        
+        shouldReceiveMessages = false
+        isConnected = false
         
         // Eğer kayıt sırasında bağlantı kesildiyse hata göster
         if isRecording {
@@ -153,7 +259,25 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        shouldReceiveMessages = false
+        isConnected = false
+        
         if let error = error {
+            let nsError = error as NSError
+            print("📡 Task completed with error:")
+            print("   Code: \(nsError.code)")
+            print("   Domain: \(nsError.domain)")
+            print("   Description: \(error.localizedDescription)")
+            if let userInfo = nsError.userInfo as? [String: Any] {
+                print("   UserInfo: \(userInfo)")
+            }
+            
+            // Cancelled hatası normal (kullanıcı bağlantıyı kapattığında)
+            if nsError.code == NSURLErrorCancelled {
+                print("ℹ️ WebSocket bağlantısı iptal edildi")
+                return
+            }
+            
             print("❌ WebSocket bağlantı hatası: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 var errorMessage = "Bağlantı kurulamadı.\n\n"
@@ -165,6 +289,8 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
                 errorMessage += "Hata: \(error.localizedDescription)"
                 self.delegate?.didReceiveError(message: errorMessage)
             }
+        } else {
+            print("📡 Task completed successfully")
         }
     }
 }
@@ -302,10 +428,16 @@ extension AudioTranscriptionService {
     
     // Ses verisini backend'e gönder
     private func sendAudioData(_ data: Data) {
+        guard isConnected, let task = webSocketTask else { return }
+        
         let message = URLSessionWebSocketTask.Message.data(data)
-        webSocketTask?.send(message) { error in
+        task.send(message) { error in
             if let error = error {
-                print("❌ Ses gönderme hatası: \(error)")
+                let nsError = error as NSError
+                // Cancelled hatası normal
+                if nsError.code != NSURLErrorCancelled {
+                    print("❌ Ses gönderme hatası: \(error)")
+                }
             }
         }
     }

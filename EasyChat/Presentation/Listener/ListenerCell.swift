@@ -39,8 +39,12 @@ class ListenerCell: UITableViewCell {
         textView.backgroundColor = .clear
     }
     
-    func configure(with text: String) {
-        textView.text = text
+    func configure(with text: String, speakerID: String? = nil) {
+        if let speakerID = speakerID {
+            textView.text = "[\(speakerID)] \(text)"
+        } else {
+            textView.text = text
+        }
         setNeedsLayout()
     }
 

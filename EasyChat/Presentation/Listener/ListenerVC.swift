@@ -87,11 +87,17 @@ class ListenerVC: UIViewController {
     }
     
     func startRecording() {
+        // Önceki kayıtları temizle
+        speakers.removeAll()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        
         // Backend'e bağlan
         transcriptionService.connect()
         
-        // Kayıt başlat
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        // Bağlantı kurulduktan sonra kayıt başlat (2 saniye bekle)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.transcriptionService.startRecording()
             self.isRecording = true
             self.updateUIForRecording(true)
@@ -119,17 +125,34 @@ class ListenerVC: UIViewController {
 // MARK: - AudioTranscriptionServiceDelegate
 extension ListenerVC: AudioTranscriptionServiceDelegate {
     func didReceiveTranscription(speakers: [Speaker]) {
-        // Her yeni speaker için cell ekle
+        print("📥 Backend'den \(speakers.count) speaker geldi")
         for speaker in speakers {
-            // Aynı speaker'ın text'ini güncelle veya yeni ekle
-            if let index = self.speakers.firstIndex(where: { $0.speaker == speaker.speaker && abs($0.end - speaker.end) < 0.5 }) {
-                // Mevcut speaker'ı güncelle
-                self.speakers[index] = speaker
+            print("   - Speaker: \(speaker.speaker), Text: \(speaker.text.prefix(50))...")
+        }
+        
+        // Her speaker için işle
+        for newSpeaker in speakers {
+            // Aynı speaker ID'sine sahip mevcut speaker var mı?
+            if let existingIndex = self.speakers.firstIndex(where: { $0.speaker == newSpeaker.speaker }) {
+                // Aynı speaker var - text'ini biriktir (güncelle)
+                let existingSpeaker = self.speakers[existingIndex]
+                let combinedText = (existingSpeaker.text + " " + newSpeaker.text).trimmingCharacters(in: .whitespaces)
+                
+                self.speakers[existingIndex] = Speaker(
+                    speaker: newSpeaker.speaker,
+                    text: combinedText,
+                    start: min(existingSpeaker.start, newSpeaker.start),
+                    end: max(existingSpeaker.end, newSpeaker.end)
+                )
+                print("   ✅ Speaker \(newSpeaker.speaker) güncellendi")
             } else {
-                // Yeni speaker ekle
-                self.speakers.append(speaker)
+                // Yeni speaker - ekle
+                self.speakers.append(newSpeaker)
+                print("   ➕ Yeni speaker \(newSpeaker.speaker) eklendi")
             }
         }
+        
+        print("📊 Toplam \(self.speakers.count) speaker var")
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -161,7 +184,7 @@ extension ListenerVC: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.row < speakers.count {
             let speaker = speakers[indexPath.row]
-            cell.configure(with: speaker.text)
+            cell.configure(with: speaker.text, speakerID: speaker.speaker)
         } else {
             cell.configure(with: "")
         }
