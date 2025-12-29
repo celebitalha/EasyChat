@@ -28,7 +28,7 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
     // Mac'inizin IP adresini buraya yazın
     // Terminal'de: ifconfig | grep "inet " | grep -v 127.0.0.1
     // Backend'i başlatırken: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    private let backendURL = "ws://192.168.0.17:8000/ws/audio"
+    private let backendURL = "ws://192.168.1.167:8000/ws/audio"
     
     func connect() {
         guard let url = URL(string: backendURL) else {
@@ -62,8 +62,8 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
             
             // URLSession'ı WebSocket için optimize edilmiş yapılandırma ile oluştur
             let config = URLSessionConfiguration.default
-            config.timeoutIntervalForRequest = 10.0
-            config.timeoutIntervalForResource = 30.0
+            config.timeoutIntervalForRequest = 30.0  // Diarization işlemi uzun sürebilir
+            config.timeoutIntervalForResource = 120.0  // Toplam işlem süresi için daha uzun timeout
             config.waitsForConnectivity = true
             
             self.urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue.main)
@@ -88,7 +88,7 @@ class AudioTranscriptionService: NSObject, URLSessionWebSocketDelegate {
             }
             
             // Bağlantı timeout kontrolü
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) { [weak self] in
                 guard let self = self else { return }
                 if !self.isConnected {
                     print("⏱️ Bağlantı zaman aşımı")
