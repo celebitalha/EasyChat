@@ -1,0 +1,9 @@
+# Kullanıcı verileri
+**/xcuserdata/
+
+# Paylaşılan veriler (Senin engellemek istediğin)
+**/xcshareddata/
+
+# Diğer gereksizler
+DerivedData/
+.DS_Store
