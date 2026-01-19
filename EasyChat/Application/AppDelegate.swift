@@ -24,8 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let db = Firestore.firestore()
         print("📦 Firestore instance:", db)
         let window = UIWindow(frame: UIScreen.main.bounds)
-        let tabbarVC = TabbarVCViewController(nibName: "TabbarVCViewController", bundle: nil)
-        window.rootViewController = tabbarVC
+        if Auth.auth().currentUser != nil {
+            let tabbarVC = TabbarVCViewController(nibName: "TabbarVCViewController", bundle: nil)
+            window.rootViewController = tabbarVC
+        } else {
+            let loginVC = LoginVCViewController(nibName: "LoginVCViewController", bundle: nil)
+            window.rootViewController = loginVC
+        }
         window.makeKeyAndVisible()
         
         self.window = window

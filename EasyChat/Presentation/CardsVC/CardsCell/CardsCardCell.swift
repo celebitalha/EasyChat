@@ -25,6 +25,12 @@ class CardsCardCell: UICollectionViewCell {
     func setUI(){
         backView.layer.cornerRadius = 16
         
+        cardTitle.textAlignment = .center
+        cardTitle.textColor = .white
+        cardTitle.font = .systemFont(ofSize: 20, weight: .bold)
+        cardTitle.numberOfLines = 0
+        cardTitle.lineBreakMode = .byWordWrapping
+        
         audioImg.image = UIImage(systemName: "speaker.wave.1")
         audioImg.tintColor = .white
         

@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardsVC" customModule="EasyChat" customModuleProvider="target">
             <connections>
+                <outlet property="categoryCollectionView" destination="K4y-ct-9xN" id="t4o-vM-7dD"/>
                 <outlet property="cardsCollectionView" destination="TWb-Ge-Xrm" id="NuZ-FZ-QYK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -21,8 +22,18 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hU1-x7-a9m">
                     <rect key="frame" x="0.0" y="16" width="393" height="820"/>
                     <subviews>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="K4y-ct-9xN">
+                            <rect key="frame" x="16" y="0.0" width="361" height="90"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YqS-Vm-8qf">
+                                <size key="itemSize" width="80" height="80"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TWb-Ge-Xrm">
-                            <rect key="frame" x="16" y="0.0" width="361" height="820"/>
+                            <rect key="frame" x="16" y="106" width="361" height="714"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fly-pb-hsG">
                                 <size key="itemSize" width="128" height="128"/>
@@ -34,9 +45,13 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="K4y-ct-9xN" firstAttribute="leading" secondItem="hU1-x7-a9m" secondAttribute="leading" constant="16" id="2m0-5v-0t8"/>
+                        <constraint firstAttribute="trailing" secondItem="K4y-ct-9xN" secondAttribute="trailing" constant="16" id="7bX-Tv-mtq"/>
+                        <constraint firstItem="K4y-ct-9xN" firstAttribute="top" secondItem="hU1-x7-a9m" secondAttribute="top" id="D4Q-1B-xaX"/>
+                        <constraint firstItem="K4y-ct-9xN" firstAttribute="height" constant="90" id="V2e-4s-2LT"/>
                         <constraint firstItem="TWb-Ge-Xrm" firstAttribute="leading" secondItem="hU1-x7-a9m" secondAttribute="leading" constant="16" id="Gtv-FJ-uuy"/>
                         <constraint firstAttribute="trailing" secondItem="TWb-Ge-Xrm" secondAttribute="trailing" constant="16" id="PVP-9b-C3Y"/>
-                        <constraint firstItem="TWb-Ge-Xrm" firstAttribute="top" secondItem="hU1-x7-a9m" secondAttribute="top" id="hwc-qx-EYH"/>
+                        <constraint firstItem="TWb-Ge-Xrm" firstAttribute="top" secondItem="K4y-ct-9xN" secondAttribute="bottom" constant="16" id="hwc-qx-EYH"/>
                         <constraint firstAttribute="bottom" secondItem="TWb-Ge-Xrm" secondAttribute="bottom" id="xnH-bw-lK8"/>
                     </constraints>
                 </view>

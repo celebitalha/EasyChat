@@ -118,6 +118,11 @@ class TabbarVCViewController: UIViewController {
     @objc private func listenTabTapped() {
         switchToViewController(listenerVC, tabIndex: 3)
     }
+
+    func showCards(forCategoryIndex index: Int) {
+        cardsVC.selectCategory(index: index)
+        switchToViewController(cardsVC, tabIndex: 1)
+    }
     
     // MARK: - View Controller Management
     private func switchToViewController(_ viewController: UIViewController, tabIndex: Int) {

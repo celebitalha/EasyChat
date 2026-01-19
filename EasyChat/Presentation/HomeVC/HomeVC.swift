@@ -103,6 +103,14 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let tabbarVC = self.parent as? TabbarVCViewController {
+            tabbarVC.showCards(forCategoryIndex: indexPath.row)
+        } else if let tabbarVC = self.view.window?.rootViewController as? TabbarVCViewController {
+            tabbarVC.showCards(forCategoryIndex: indexPath.row)
+        }
+    }
 }
 
 extension HomeVC: UICollectionViewDelegateFlowLayout {

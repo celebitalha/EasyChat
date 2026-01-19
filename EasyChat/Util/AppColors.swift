@@ -16,6 +16,8 @@ struct AppColors {
 
     static let cardBorder = UIColor(red: 0.89, green: 0.91, blue: 0.94, alpha: 1.00)
     
+    static let loginBgColor = UIColor(red: 0.50, green: 0.72, blue: 1.00, alpha: 1.00)
+    
     //MARK: - Text Colors
     
     
@@ -25,7 +27,7 @@ struct AppColors {
     // MARK: - Category Icon Colors
     
     static let mealIcon = UIColor(red: 0.00, green: 0.72, blue: 1.00, alpha: 1.00)
-    static let dailyIcon = UIColor(red: 1.00, green: 0.96, blue: 0.53, alpha: 1.00)
+    static let dailyIcon = UIColor(red: 0.98, green: 0.78, blue: 0.25, alpha: 1.00)
     static let basicIcon = UIColor(red: 0.42, green: 0.66, blue: 0.31, alpha: 1.00)
     
 

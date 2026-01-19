@@ -31,10 +31,20 @@ class CategoryCell: UICollectionViewCell {
         titleLbl.textColor = AppColors.cardDescColor
     }
     
-    func configureCell(at index: Int) {
+    func configureCell(at index: Int, isSelected: Bool = false) {
+        let tintColor = imageColors[index]
         titleLbl.text = categories[index]
-        imageView.tintColor = imageColors[index]
         imageView.image = UIImage(systemName: icons[index])
+        
+        if isSelected {
+            backView.backgroundColor = tintColor
+            imageView.tintColor = .white
+            titleLbl.textColor = .white
+        } else {
+            backView.backgroundColor = AppColors.background
+            imageView.tintColor = tintColor
+            titleLbl.textColor = AppColors.cardDescColor
+        }
     }
     
     
